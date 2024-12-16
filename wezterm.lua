@@ -9,6 +9,42 @@ wezterm.on('update-right-status', function(window, pane)
 	window:set_right_status(window:active_workspace())
 end)
 
+-- Setting up opening scrollingback in vim
+local io = require 'io'
+local os = require 'os'
+
+wezterm.on('trigger-vim-with-scrollback', function(window, pane)
+	-- Retrieve the text from the pane
+	local text = pane:get_lines_as_text(pane:get_dimensions().scrollback_rows)
+
+	-- Create a temporary file to pass to vim
+	local name = os.tmpname()
+	local f = io.open(name, 'w+')
+	f:write(text)
+	f:flush()
+	f:close()
+
+	-- Open a new window running vim and tell it to open the file
+	window:perform_action(
+		act.spawnCommandInNewWindow{
+			args={'nvim', name},
+		},
+		pane
+	)
+
+	-- Wait enough imte for nvim to read the file before we remove it.
+	-- The window creation and process spawn are asynchronous wrt, running 
+	-- this script and are not wawaitable, so we just pick a number.
+	--
+	-- Note : We don't strictly need to remove this file, but it is nice
+	-- to avoid cluttering up the temporary directory.
+	wezter.sleep_ms(1000)
+	os.remove(name)
+
+end)
+
+
+
 -- Setting up mux
 local mux = wezterm.mux
 wezterm.on('gui-startup', function(cmd)
@@ -53,8 +89,10 @@ local config = wezterm.config_builder()
 
 -- This is where you actually apply your configuration
 -- For example, changing the color scheme:
-config.color_scheme = 'Catppuccin Frappé (Gogh)'
+-- config.color_scheme = 'Catppuccin Frappé (Gogh)'
+config.color_scheme = 'Catppuccin Latte'
 config.font = wezterm.font 'JetBrains Mono'
+
 -- config.window_background_opacity = 0.1
 config.text_background_opacity = 0.3
 config.default_prog = {'powershell.exe'}

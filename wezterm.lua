@@ -38,7 +38,7 @@ wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 	--
 	-- Note : We don't strictly need to remove this file, but it is nice
 	-- to avoid cluttering up the temporary directory.
-	wezter.sleep_ms(1000)
+	wezterm.sleep_ms(1000)
 	os.remove(name)
 end)
 
@@ -85,6 +85,7 @@ local config = wezterm.config_builder()
 
 -- This is where you actually apply your configuration
 -- For example, changing the color scheme:
+
 -- config.color_scheme = 'Catppuccin Frappé (Gogh)'
 -- config.color_scheme = 'Catppuccin Latte'
 config.font = wezterm.font("JetBrains Mono")
@@ -92,7 +93,9 @@ config.font = wezterm.font("JetBrains Mono")
 config.colors = require("cyberdream")
 
 -- config.window_background_opacity = 0.1
-config.text_background_opacity = 0.3
+-- config.text_background_opacity = 0.3
+config.window_background_opacity = 0.85
+
 config.default_prog = { "powershell.exe" }
 
 -- setting up workspace

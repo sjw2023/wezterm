@@ -84,21 +84,55 @@ end)
 local config = wezterm.config_builder()
 
 -- This is where you actually apply your configuration
--- For example, changing the color scheme:
-
--- config.color_scheme = 'Catppuccin Frappé (Gogh)'
--- config.color_scheme = 'Catppuccin Latte'
-config.font = wezterm.font("JetBrains Mono")
--- config.color_scheme = "Catppuccin Macchiato"
-config.colors = require("cyberdream")
-
--- config.window_background_opacity = 0.1
+--- config.window_background_opacity = 0.1
 -- config.text_background_opacity = 0.3
 config.window_background_opacity = 0.85
 
 config.default_prog = { "powershell.exe" }
 
 -- setting up workspace
+
+
+config.font = wezterm.font("JetBrains Mono")
+
+-- Setting Color
+-- For example, changing the color scheme:
+
+-- config.color_scheme = 'Catppuccin Frappé (Gogh)'
+-- config.color_scheme = 'Catppuccin Latte'
+-- config.color_scheme = "Catppuccin Macchiato"
+config.colors = require("cyberdream")
+config.colors = {
+  background = "#0c0b0f",
+  tab_bar = {
+    background = "#0c0b0f",
+    active_tab = {
+			bg_color = "#0c0b0f",
+			fg_color = "#bea3c7",
+			intensity = "Normal",
+			underline = "None",
+			italic = false,
+			strikethrough = false,
+		},
+		inactive_tab = {
+			bg_color = "#0c0b0f",
+			fg_color = "#f8f2f5",
+			intensity = "Normal",
+			underline = "None",
+			italic = false,
+			strikethrough = false,
+		},
+		new_tab = {
+			-- bg_color = "rgba(59, 34, 76, 50%)",
+			bg_color = "#0c0b0f",
+			fg_color = "white",
+		},
+  },
+}
+
+
+-- Setting up key mappings
+
 config.keys = {
 	-- Switch to the default workspace
 	{
@@ -120,7 +154,12 @@ config.keys = {
 		}),
 	},
 	-- Create a new workspace with a random name and switch to it
-	{ key = "i", mods = "CTRL|SHIFT", action = act.SwitchToWorkspace },
+	{ 
+    key = "i",
+    mods = "CTRL|SHIFT", 
+    action = act.SwitchToWorkspace
+  },
+
 	-- Show the launcher in fuzzy selection mode and have it list all workspaces
 	-- and allow activating one
 	{
@@ -139,12 +178,24 @@ config.keys = {
 		}),
 	},
 	{
-		key = "v",
-		mods = "CTRL|SHIFT|ALT",
-		action = wezterm.action.SplitPane({
-			direction = "Down",
-			size = { Percent = 50 },
-		}),
+		key = "U",
+		mods = "CTRL|SHIFT",
+    action = act.AdjustPaneSize({"Left", 5}),
+	},		
+  {
+		key = "I",
+		mods = "CTRL|SHIFT",
+    action = act.AdjustPaneSize({"Down", 5}),
+	},
+  {
+		key = "O",
+		mods = "CTRL|SHIFT",
+    action = act.AdjustPaneSize({"Up", 5}),
+	},
+  {
+		key = "P",
+		mods = "CTRL|SHIFT",
+    action = act.AdjustPaneSize({"Right", 5}),
 	},
 	{
 		key = "v",
@@ -154,6 +205,16 @@ config.keys = {
 			size = { Percent = 50 },
 		}),
 	},
+  {
+    key = "9",
+    mods = "CTRL",
+    action = act.PaneSelect,
+  }
+  {
+    key = "L",
+    mods = "CTRL",
+    action = act.ShowDebugOverlay,
+  },
 }
 
 -- keys.setup(config)

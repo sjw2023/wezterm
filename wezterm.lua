@@ -87,11 +87,11 @@ local config = wezterm.config_builder()
 --- config.window_background_opacity = 0.1
 -- config.text_background_opacity = 0.3
 config.window_background_opacity = 0.85
-
+config.enable_scroll_bar = true
 config.default_prog = { "powershell.exe" }
+config.scrollback_lines = 3500
 
 -- setting up workspace
-
 
 config.font = wezterm.font("JetBrains Mono")
 
@@ -103,10 +103,10 @@ config.font = wezterm.font("JetBrains Mono")
 -- config.color_scheme = "Catppuccin Macchiato"
 config.colors = require("cyberdream")
 config.colors = {
-  background = "#0c0b0f",
-  tab_bar = {
-    background = "#0c0b0f",
-    active_tab = {
+	background = "#0c0b0f",
+	tab_bar = {
+		background = "#0c0b0f",
+		active_tab = {
 			bg_color = "#0c0b0f",
 			fg_color = "#bea3c7",
 			intensity = "Normal",
@@ -127,9 +127,8 @@ config.colors = {
 			bg_color = "#0c0b0f",
 			fg_color = "white",
 		},
-  },
+	},
 }
-
 
 -- Setting up key mappings
 
@@ -154,11 +153,11 @@ config.keys = {
 		}),
 	},
 	-- Create a new workspace with a random name and switch to it
-	{ 
-    key = "i",
-    mods = "CTRL|SHIFT", 
-    action = act.SwitchToWorkspace
-  },
+	{
+		key = "i",
+		mods = "CTRL|SHIFT",
+		action = act.SwitchToWorkspace,
+	},
 
 	-- Show the launcher in fuzzy selection mode and have it list all workspaces
 	-- and allow activating one
@@ -180,22 +179,22 @@ config.keys = {
 	{
 		key = "U",
 		mods = "CTRL|SHIFT",
-    action = act.AdjustPaneSize({"Left", 5}),
-	},		
-  {
+		action = act.AdjustPaneSize({ "Left", 5 }),
+	},
+	{
 		key = "I",
 		mods = "CTRL|SHIFT",
-    action = act.AdjustPaneSize({"Down", 5}),
+		action = act.AdjustPaneSize({ "Down", 5 }),
 	},
-  {
+	{
 		key = "O",
 		mods = "CTRL|SHIFT",
-    action = act.AdjustPaneSize({"Up", 5}),
+		action = act.AdjustPaneSize({ "Up", 5 }),
 	},
-  {
+	{
 		key = "P",
 		mods = "CTRL|SHIFT",
-    action = act.AdjustPaneSize({"Right", 5}),
+		action = act.AdjustPaneSize({ "Right", 5 }),
 	},
 	{
 		key = "v",
@@ -205,16 +204,26 @@ config.keys = {
 			size = { Percent = 50 },
 		}),
 	},
-  {
-    key = "9",
-    mods = "CTRL",
-    action = act.PaneSelect,
-  }
-  {
-    key = "L",
-    mods = "CTRL",
-    action = act.ShowDebugOverlay,
-  },
+	{
+		key = "9",
+		mods = "CTRL",
+		action = act.PaneSelect,
+	},
+	{
+		key = "L",
+		mods = "CTRL",
+		action = act.ShowDebugOverlay,
+	},
+	{
+		key = "j",
+		mods = "CTRL",
+		action = act.ScrollByPage(-1),
+	},
+	{
+		key = "k",
+		mods = "CTRL",
+		action = act.ScrollByPage(1),
+	},
 }
 
 -- keys.setup(config)

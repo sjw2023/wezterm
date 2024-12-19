@@ -169,14 +169,6 @@ config.keys = {
 		}),
 	},
 	{
-		key = "h",
-		mods = "CTRL|SHIFT|ALT",
-		action = wezterm.action.SplitPane({
-			direction = "Right",
-			size = { Percent = 50 },
-		}),
-	},
-	{
 		key = "U",
 		mods = "CTRL|SHIFT",
 		action = act.AdjustPaneSize({ "Left", 5 }),
@@ -215,13 +207,22 @@ config.keys = {
 		action = act.ShowDebugOverlay,
 	},
 	{
+		key = "h",
+		mods = "CTRL|SHIFT|ALT",
+		action = wezterm.action.SplitPane({
+			direction = "Right",
+			size = { Percent = 50 },
+		}),
+	},
+
+	{
 		key = "j",
-		mods = "CTRL",
+		mods = "CTRL|SHIFT",
 		action = act.ScrollByPage(-1),
 	},
 	{
 		key = "k",
-		mods = "CTRL",
+		mods = "CTRL|SHIFT",
 		action = act.ScrollByPage(1),
 	},
 }

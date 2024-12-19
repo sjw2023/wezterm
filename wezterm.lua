@@ -218,12 +218,12 @@ config.keys = {
 	{
 		key = "j",
 		mods = "CTRL|SHIFT",
-		action = act.ScrollByPage(-1),
+		action = act.ScrollByPage(1),
 	},
 	{
 		key = "k",
 		mods = "CTRL|SHIFT",
-		action = act.ScrollByPage(1),
+		action = act.ScrollByPage(-1),
 	},
 }
 

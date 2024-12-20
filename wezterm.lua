@@ -4,6 +4,22 @@ local move = require("plugins.move")
 local keys = require("keys")
 local act = wezterm.action
 
+local platform_info = {
+	window = "x86_64-pc-windows-msvc",
+	mac_intel = "x86_64-apple-darwin",
+	mac_silicon = "aarch64-apple-darwin",
+	linux = "x86_64-unknown-linux-gnu",
+}
+-- This will hold the configuration.
+local config = wezterm.config_builder()
+
+local platform = wezterm.target_triple
+if platform == platform_info["window"] then
+	config.default_prog = { "powershell.exe" }
+else
+	config.default_prog = { "zsh" }
+end
+
 -- Setting up workspace
 wezterm.on("update-right-status", function(window, pane)
 	window:set_right_status(window:active_workspace())
@@ -80,15 +96,11 @@ wezterm.on("gui-startup", function(cmd)
 	--	window:gui_window():maximize()
 end)
 
--- This will hold the configuration.
-local config = wezterm.config_builder()
-
 -- This is where you actually apply your configuration
 --- config.window_background_opacity = 0.1
 -- config.text_background_opacity = 0.3
 config.window_background_opacity = 0.85
 config.enable_scroll_bar = true
-config.default_prog = { "powershell.exe" }
 config.scrollback_lines = 3500
 
 -- setting up workspace

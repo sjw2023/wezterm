@@ -153,8 +153,9 @@ config.keys = {
 			name = "default",
 		}),
 	},
+
 	-- Switch to a monitoring workspace, which will have 'top' launched into it
-	{
+	--[[ {
 		key = "u",
 		mods = "CTRL|SHIFT",
 		action = act.SwitchToWorkspace({
@@ -163,13 +164,14 @@ config.keys = {
 				args = { "top" },
 			},
 		}),
-	},
+	}, ]]
+
 	-- Create a new workspace with a random name and switch to it
-	{
+	--[[ {
 		key = "i",
 		mods = "CTRL|SHIFT",
 		action = act.SwitchToWorkspace,
-	},
+	}, ]]
 
 	-- Show the launcher in fuzzy selection mode and have it list all workspaces
 	-- and allow activating one
@@ -208,6 +210,42 @@ config.keys = {
 			size = { Percent = 50 },
 		}),
 	},
+
+	-- Splitting panes
+
+	{
+		key = "H",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.SplitPane({
+			direction = "Left",
+			size = { Percent = 50 },
+		}),
+	},
+	{
+		key = "J",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.SplitPane({
+			direction = "Down",
+			size = { Percent = 50 },
+		}),
+	},
+	{
+		key = "K",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.SplitPane({
+			direction = "Up",
+			size = { Percent = 50 },
+		}),
+	},
+	{
+		key = "L",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.SplitPane({
+			direction = "Right",
+			size = { Percent = 50 },
+		}),
+	},
+
 	{
 		key = "9",
 		mods = "CTRL",
@@ -229,12 +267,12 @@ config.keys = {
 
 	{
 		key = "j",
-		mods = "CTRL|SHIFT",
+		mods = "ALT|SHIFT",
 		action = act.ScrollByPage(1),
 	},
 	{
 		key = "k",
-		mods = "CTRL|SHIFT",
+		mods = "ALT|SHIFT",
 		action = act.ScrollByPage(-1),
 	},
 }

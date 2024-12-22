@@ -185,22 +185,22 @@ config.keys = {
 	{
 		key = "U",
 		mods = "CTRL|SHIFT",
-		action = act.AdjustPaneSize({ "Left", 5 }),
+		action = act.AdjustPaneSize({ "Left", 1 }),
 	},
 	{
 		key = "I",
 		mods = "CTRL|SHIFT",
-		action = act.AdjustPaneSize({ "Down", 5 }),
+		action = act.AdjustPaneSize({ "Down", 1 }),
 	},
 	{
 		key = "O",
 		mods = "CTRL|SHIFT",
-		action = act.AdjustPaneSize({ "Up", 5 }),
+		action = act.AdjustPaneSize({ "Up", 1 }),
 	},
 	{
 		key = "P",
 		mods = "CTRL|SHIFT",
-		action = act.AdjustPaneSize({ "Right", 5 }),
+		action = act.AdjustPaneSize({ "Right", 1 }),
 	},
 	{
 		key = "v",

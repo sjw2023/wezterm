@@ -202,14 +202,6 @@ config.keys = {
 		mods = "CTRL|SHIFT",
 		action = act.AdjustPaneSize({ "Right", 1 }),
 	},
-	{
-		key = "v",
-		mods = "CTRL|SHIFT|ALT",
-		action = wezterm.action.SplitPane({
-			direction = "Down",
-			size = { Percent = 50 },
-		}),
-	},
 
 	-- Splitting panes
 
@@ -259,12 +251,12 @@ config.keys = {
 
 	{
 		key = "j",
-		mods = "ALT|SHIFT",
+		mods = "CTRL|ALT|SHIFT",
 		action = act.ScrollByPage(1),
 	},
 	{
 		key = "k",
-		mods = "ALT|SHIFT",
+		mods = "CTRL|ALT|SHIFT",
 		action = act.ScrollByPage(-1),
 	},
 }

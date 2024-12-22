@@ -251,19 +251,11 @@ config.keys = {
 		mods = "CTRL",
 		action = act.PaneSelect,
 	},
-	{
-		key = "L",
-		mods = "CTRL",
-		action = act.ShowDebugOverlay,
-	},
-	{
-		key = "h",
-		mods = "CTRL|SHIFT|ALT",
-		action = wezterm.action.SplitPane({
-			direction = "Right",
-			size = { Percent = 50 },
-		}),
-	},
+	-- {
+	-- 	key = "L",
+	-- 	mods = "CTRL",
+	-- 	action = act.ShowDebugOverlay,
+	-- },
 
 	{
 		key = "j",

@@ -15,7 +15,8 @@ local config = wezterm.config_builder()
 
 local platform = wezterm.target_triple
 if platform == platform_info["window"] then
-	config.default_prog = { "powershell.exe" }
+	-- config.default_prog = { "powershell.exe" }
+	config.default_prog = { "nu" }
 else
 	config.default_prog = { "zsh" }
 end

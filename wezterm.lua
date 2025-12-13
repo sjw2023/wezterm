@@ -235,6 +235,13 @@ config.keys = {
 		action = wezterm.action.ActivatePaneDirection("Right"),
 	},
 
+	-- Copy and Paste setting
+	{
+		key = "v",
+		mods = "CTRL",
+		action = act.PasteFrom("Clipboard"),
+	},
+
 	-- Splitting panes
 
 	{

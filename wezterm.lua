@@ -60,43 +60,41 @@ wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 end)
 
 -- Setting up mux
-local mux = wezterm.mux
-wezterm.on("gui-startup", function(cmd)
-	-- allow 'wezterm sstart -- something' to affect what we spawn
-	-- in our initial window
-	local args = {}
-	if cmd then
-		args = cmd.args
-	end
-	-- Set a workspace for coding on a current project
-	-- Top pane is for the editor, bottom is for the build tool
-	local project_dir = wezterm.home_dir .. "\\wezterm"
-	local tab, build_pane, window = mux.spawn_window({
-		workspace = "coding",
-		cwd = project_dir,
-		args = args,
-	})
-	local editor_pane = build_pane:split({
-		direction = "Top",
-		size = 0.6,
-		cwd = project_dir,
-	})
-	-- may as well kick off a build in that pane
-	build_pane:send_text("cargo build\n")
+--  local mux = wezterm.mux
+--  wezterm.on("gui-startup", function(cmd)
+--    -- allow 'wezterm sstart -- something' to affect what we spawn
+--    -- in our initial window
+--    local args = {}
+--    if cmd then
+--      args = cmd.args
+--    end
+--    -- Set a workspace for coding on a current project
+--    -- Top pane is for the editor, bottom is for the build tool
+--    local project_dir = wezterm.home_dir .. "\\wezterm"
+--    local tab, build_pane, window = mux.spawn_window({
+--      workspace = "coding",
+--      cwd = project_dir,
+--      args = args,
+--    })
+--    local editor_pane = build_pane:split({
+--      direction = "Top",
+--      size = 0.6,
+--      cwd = project_dir,
+--    })
 
-	-- A workspace for interacting with a local machine that
-	-- runs some docker conrainers for home automation
-	local tab, pane, window = mux.spawn_window({
-		workspace = "automation",
-		args = { "ssh", "vault" },
-	})
+-- A workspace for interacting with a local machine that
+-- runs some docker conrainers for home automation
+-- local tab, pane, window = mux.spawn_window({
+--workspace = "automation",
+-- args = { "ssh", "vault" },
+-- })
 
-	-- We want to startup in the coding workspace
-	mux.set_active_workspace("coding")
-	--	local tab, pane, window = mux.spawn_window(cmd or {})
-	--	window:gui_window():maximize()
-end)
-
+-- We want to startup in the coding workspace
+--     mux.set_active_workspace("coding")
+--     --	local tab, pane, window = mux.spawn_window(cmd or {})
+--     --	window:gui_window():maximize()
+--   end)
+--
 -- This is where you actually apply your configuration
 --- config.window_background_opacity = 0.1
 -- config.text_background_opacity = 0.3
@@ -212,6 +210,28 @@ config.keys = {
 		}),
 	},
 
+	-- Move pane
+	{
+		key = "h",
+		mods = "CTRL",
+		action = wezterm.action.ActivatePaneDirection("Left"),
+	},
+	{
+		key = "j",
+		mods = "CTRL",
+		action = wezterm.action.ActivatePaneDirection("Down"),
+	},
+	{
+		key = "k",
+		mods = "CTRL",
+		action = wezterm.action.ActivatePaneDirection("Up"),
+	},
+	{
+		key = "l",
+		mods = "CTRL",
+		action = wezterm.action.ActivatePaneDirection("Right"),
+	},
+
 	-- Splitting panes
 
 	{
@@ -252,17 +272,13 @@ config.keys = {
 		mods = "CTRL",
 		action = act.PaneSelect,
 	},
-	-- {
-	-- 	key = "L",
-	-- 	mods = "CTRL",
-	-- 	action = act.ShowDebugOverlay,
-	-- },
 
 	{
 		key = "j",
 		mods = "ALT|SHIFT",
 		action = act.ScrollByPage(1),
 	},
+
 	{
 		key = "k",
 		mods = "ALT|SHIFT",

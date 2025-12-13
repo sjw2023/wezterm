@@ -104,6 +104,7 @@ config.scrollback_lines = 3500
 
 -- setting up workspace
 
+term = "xterm_256color"
 config.font = wezterm.font("JetBrains Mono")
 config.front_end = "OpenGL"
 config.max_fps = 144

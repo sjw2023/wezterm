@@ -96,7 +96,7 @@ end)
 --   end)
 --
 -- This is where you actually apply your configuration
---- config.window_background_opacity = 0.1
+-- config.window_background_opacity = 0.1
 -- config.text_background_opacity = 0.3
 config.window_background_opacity = 0.85
 config.enable_scroll_bar = true
@@ -105,6 +105,17 @@ config.scrollback_lines = 3500
 -- setting up workspace
 
 config.font = wezterm.font("JetBrains Mono")
+config.front_end = "OpenGL"
+config.max_fps = 144
+config.hide_tab_bar_if_only_one_tab = true
+config.use_fancy_tab_bar = false
+config.cell_width = 0.9
+config.window_padding = {
+	left = 0,
+	right = 0,
+	top = 0,
+	bottom = 0,
+}
 
 -- Setting Color
 -- For example, changing the color scheme:
@@ -201,14 +212,6 @@ config.keys = {
 		mods = "CTRL|SHIFT",
 		action = act.AdjustPaneSize({ "Right", 1 }),
 	},
-	{
-		key = "v",
-		mods = "CTRL|SHIFT|ALT",
-		action = wezterm.action.SplitPane({
-			direction = "Down",
-			size = { Percent = 50 },
-		}),
-	},
 
 	-- Move pane
 	{
@@ -275,13 +278,13 @@ config.keys = {
 
 	{
 		key = "j",
-		mods = "ALT|SHIFT",
+		mods = "CTRL|ALT|SHIFT",
 		action = act.ScrollByPage(1),
 	},
 
 	{
 		key = "k",
-		mods = "ALT|SHIFT",
+		mods = "CTRL|ALT|SHIFT",
 		action = act.ScrollByPage(-1),
 	},
 }

@@ -18,7 +18,7 @@ if platform == platform_info["window"] then
 	-- config.default_prog = { "powershell.exe" }
 	config.default_prog = { "nu" }
 else
-	config.default_prog = { "zsh" }
+	config.default_prog = { "/opt/homebrew/bin/nu" }
 end
 
 -- Setting up workspace

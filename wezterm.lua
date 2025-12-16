@@ -98,7 +98,7 @@ end)
 -- This is where you actually apply your configuration
 -- config.window_background_opacity = 0.1
 -- config.text_background_opacity = 0.3
-config.window_background_opacity = 0.85
+config.window_background_opacity = 0.6
 config.enable_scroll_bar = true
 config.scrollback_lines = 3500
 

@@ -59,6 +59,13 @@ wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 	os.remove(name)
 end)
 
+--update-right-status
+config.automatically_reload_config = true
+config.enable_tab_bar = false
+config.window_close_confirmation = "NeverPrompt"
+config.window_decorations = "RESIZE"
+config.font_size = 12.5
+
 -- Setting up mux
 --  local mux = wezterm.mux
 --  wezterm.on("gui-startup", function(cmd)
@@ -82,6 +89,17 @@ end)
 --      cwd = project_dir,
 --    })
 
+-- Background seting
+config.background = {}
+
+-- Window setting
+config.window_padding = {
+	left = 3,
+	right = 3,
+	top = 0,
+	bottom = 0,
+}
+
 -- A workspace for interacting with a local machine that
 -- runs some docker conrainers for home automation
 -- local tab, pane, window = mux.spawn_window({
@@ -103,7 +121,6 @@ config.enable_scroll_bar = true
 config.scrollback_lines = 3500
 
 -- setting up workspace
-
 term = "xterm_256color"
 config.font = wezterm.font("JetBrains Mono")
 config.front_end = "OpenGL"
@@ -111,16 +128,9 @@ config.max_fps = 144
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
 config.cell_width = 0.9
-config.window_padding = {
-	left = 0,
-	right = 0,
-	top = 0,
-	bottom = 0,
-}
 
 -- Setting Color
 -- For example, changing the color scheme:
-
 -- config.color_scheme = 'Catppuccin Frappé (Gogh)'
 -- config.color_scheme = 'Catppuccin Latte'
 -- config.color_scheme = "Catppuccin Macchiato"

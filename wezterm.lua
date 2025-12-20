@@ -30,10 +30,21 @@ end)
 local io = require("io")
 local os = require("os")
 
+--gui-startup
+wezterm.on("gui-startup", function(cmd)
+	local screen = wezterm.gui.screens().active
+	local window_width = screen.width * 0.8
+	local window_height = screen.height * 0.8
+	local x = (screen.width - window_width) / 2
+	local y = (scree.height - window_height) / 2
+	wezterm.mux.spawn_window({
+		position = { x = x, y = y, origin = "ActiveScreen" },
+	})
+end)
+
 wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 	-- Retrieve the text from the pane
 	local text = pane:get_lines_as_text(pane:get_dimensions().scrollback_rows)
-
 	-- Create a temporary file to pass to vim
 	local name = os.tmpname()
 	local f = io.open(name, "w+")
@@ -59,12 +70,14 @@ wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 	os.remove(name)
 end)
 
---update-right-status
+--Default-settings
 config.automatically_reload_config = true
 config.enable_tab_bar = false
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE"
 config.font_size = 12.5
+config.initial_cols = 200
+config.initial_rows = 50
 
 -- Setting up mux
 --  local mux = wezterm.mux
@@ -91,6 +104,11 @@ config.font_size = 12.5
 
 -- Background seting
 config.background = {}
+
+config.inactive_pane_hsb = {
+	saturation = 0.9,
+	brightness = 0.5,
+}
 
 -- Window setting
 config.window_padding = {

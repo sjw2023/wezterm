@@ -10,8 +10,24 @@ local platform_info = {
 	mac_silicon = "aarch64-apple-darwin",
 	linux = "x86_64-unknown-linux-gnu",
 }
+
+--gui-startup
+wezterm.on("gui-startup", function(cmd)
+	local screen = wezterm.gui.screens().active
+	local window_width = screen.width * 0.8
+	local window_height = screen.height * 0.8
+	local x = (screen.width - window_width) / 2
+	local y = (screen.height - window_height) / 2
+	local tab, pane, window = wezterm.mux.spawn_window(cmd or {
+		position = { x = x, y = y, origin = "ActiveScreen" },
+	})
+end)
+
 -- This will hold the configuration.
 local config = wezterm.config_builder()
+-- local screen = wezterm.gui.screens().active
+-- config.initial_cols = screen.width * 0.8
+-- config.initial_rows = screen.height * 0.8
 
 local platform = wezterm.target_triple
 if platform == platform_info["window"] then
@@ -22,25 +38,23 @@ else
 end
 
 -- Setting up workspace
-wezterm.on("update-right-status", function(window, pane)
-	window:set_right_status(window:active_workspace())
-end)
-
+-- wezterm.on("update-right-status", function(window, pane)
+-- 	local data = wezterm.strftime("%5 %b %-d %H:%M ")
+-- 	local bat = ""
+-- 	for _, b in ipairs(wezterm.battery_info()) do
+-- 		bat = "b" .. string.format("%.0f%%", b.state_of_charging * 100)
+-- 	end
+-- 	window:set_right_status(window:active_workspace())
+-- 	-- window:set_right_status(wezter.format({
+-- 	-- 	{
+-- 	-- 		Text = bat .. "    " .. date,
+-- 	-- 	},
+-- 	-- }))
+-- end)
+--
 -- Setting up opening scrollingback in vim
 local io = require("io")
 local os = require("os")
-
---gui-startup
-wezterm.on("gui-startup", function(cmd)
-	local screen = wezterm.gui.screens().active
-	local window_width = screen.width * 0.8
-	local window_height = screen.height * 0.8
-	local x = (screen.width - window_width) / 2
-	local y = (scree.height - window_height) / 2
-	wezterm.mux.spawn_window({
-		position = { x = x, y = y, origin = "ActiveScreen" },
-	})
-end)
 
 wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 	-- Retrieve the text from the pane
@@ -76,8 +90,8 @@ config.enable_tab_bar = false
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE"
 config.font_size = 12.5
-config.initial_cols = 200
-config.initial_rows = 50
+-- config.initial_cols = 200
+-- config.initial_rows = 50
 
 -- Setting up mux
 --  local mux = wezterm.mux
@@ -146,6 +160,25 @@ config.max_fps = 144
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
 config.cell_width = 0.9
+
+config.text_blink_ease_in = "EaseIn"
+config.text_blink_ease_out = "EaseOut"
+config.text_blink_rapid_ease_in = "Linear"
+config.text_blink_rapid_ease_out = "Linear"
+config.text_blink_rate = 500
+config.text_blink_rate_rapid = 250
+
+---cursor
+config.cursor_blink_ease_in = "EaseIn"
+config.cursor_blink_ease_out = "EaseOut"
+config.cursor_blink_rate = 500
+config.default_cursor_style = "BlinkingUnderline"
+config.cursor_thickness = 1
+config.force_reverse_video_cursor = true
+
+config.enable_scroll_bar = true
+
+config.hide_mouse_cursor_when_typing = true
 
 -- Setting Color
 -- For example, changing the color scheme:

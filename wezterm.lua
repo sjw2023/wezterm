@@ -32,7 +32,7 @@ local config = wezterm.config_builder()
 local platform = wezterm.target_triple
 if platform == platform_info["window"] then
 	-- config.default_prog = { "powershell.exe" }
-	config.default_prog = { "nu" }
+	config.default_prog = { "pwsh" }
 else
 	config.default_prog = { "/opt/homebrew/bin/nu" }
 end

@@ -14,13 +14,14 @@ local platform_info = {
 --gui-startup
 wezterm.on("gui-startup", function(cmd)
 	local screen = wezterm.gui.screens().active
-	local window_width = screen.width * 0.8
-	local window_height = screen.height * 0.8
+	local window_width = screen.width * 0.98
+	local window_height = screen.height * 0.95
 	local x = (screen.width - window_width) / 2
 	local y = (screen.height - window_height) / 2
 	local tab, pane, window = wezterm.mux.spawn_window(cmd or {
 		position = { x = x, y = y, origin = "ActiveScreen" },
 	})
+	window:gui_window():set_inner_size(window_width, window_height)
 end)
 
 -- This will hold the configuration.
@@ -56,6 +57,39 @@ end
 local io = require("io")
 local os = require("os")
 
+-- Auto-resize to fit destination monitor when moving between screens
+-- Debounced: waits for mouse release (no more resize events) before centering
+local last_screen_name = nil
+local resize_seq = 0
+wezterm.on("window-resized", function(window, pane)
+	local screen = wezterm.gui.screens().active
+	if last_screen_name and last_screen_name ~= screen.name then
+		-- Monitor changed — debounce to wait for mouse release
+		resize_seq = resize_seq + 1
+		local current_seq = resize_seq
+		local target_screen = screen
+		wezterm.time.call_after(0.5, function()
+			if current_seq == resize_seq then
+				-- No more resize events — mouse likely released, center now
+				local new_width = math.floor(target_screen.width * 0.98)
+				local new_height = math.floor(target_screen.height * 0.95)
+				local taskbar_height = 48 -- Windows 11 taskbar ~48px
+				local usable_height = target_screen.height - taskbar_height
+				local x = target_screen.x + math.floor((target_screen.width - new_width) / 2)
+				local y = target_screen.y + math.floor((usable_height - new_height) / 2)
+				window:set_inner_size(new_width, new_height)
+				window:set_position(x, y)
+			end
+		end)
+	end
+	last_screen_name = screen.name
+
+	-- Re-apply transparency after monitor switch
+	local overrides = window:get_config_overrides() or {}
+	overrides.window_background_opacity = 0.6
+	window:set_config_overrides(overrides)
+end)
+
 wezterm.on("trigger-vim-with-scrollback", function(window, pane)
 	-- Retrieve the text from the pane
 	local text = pane:get_lines_as_text(pane:get_dimensions().scrollback_rows)
@@ -86,9 +120,9 @@ end)
 
 --Default-settings
 config.automatically_reload_config = true
-config.enable_tab_bar = false
+config.enable_tab_bar = true
 config.window_close_confirmation = "NeverPrompt"
-config.window_decorations = "RESIZE"
+config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
 config.font_size = 12.5
 -- config.initial_cols = 200
 -- config.initial_rows = 50
@@ -117,7 +151,7 @@ config.font_size = 12.5
 --    })
 
 -- Background seting
-config.background = {}
+-- config.background = {}
 
 config.inactive_pane_hsb = {
 	saturation = 0.9,
@@ -149,16 +183,20 @@ config.window_padding = {
 -- config.window_background_opacity = 0.1
 -- config.text_background_opacity = 0.3
 config.window_background_opacity = 0.6
+-- config.win32_system_backdrop = "Acrylic"
 config.enable_scroll_bar = true
 config.scrollback_lines = 3500
 
 -- setting up workspace
 term = "xterm_256color"
 config.font = wezterm.font("JetBrains Mono")
+-- OpenGL: transparency works with maximize (not fullscreen - wezterm #4525)
+-- WebGpu: opacity broken on Windows (wezterm #5790, #6359)
 config.front_end = "OpenGL"
-config.max_fps = 144
-config.hide_tab_bar_if_only_one_tab = true
-config.use_fancy_tab_bar = false
+-- config.webgpu_power_preference = "HighPerformance"
+config.max_fps = 60
+config.hide_tab_bar_if_only_one_tab = false
+config.use_fancy_tab_bar = true
 config.cell_width = 0.9
 
 config.text_blink_ease_in = "EaseIn"
@@ -185,38 +223,37 @@ config.hide_mouse_cursor_when_typing = true
 -- config.color_scheme = 'Catppuccin Frappé (Gogh)'
 -- config.color_scheme = 'Catppuccin Latte'
 -- config.color_scheme = "Catppuccin Macchiato"
-config.colors = require("cyberdream")
-config.colors = {
-	background = "#0c0b0f",
-	tab_bar = {
-		background = "#0c0b0f",
-		active_tab = {
-			bg_color = "#0c0b0f",
-			fg_color = "#bea3c7",
-			intensity = "Normal",
-			underline = "None",
-			italic = false,
-			strikethrough = false,
-		},
-		inactive_tab = {
-			bg_color = "#0c0b0f",
-			fg_color = "#f8f2f5",
-			intensity = "Normal",
-			underline = "None",
-			italic = false,
-			strikethrough = false,
-		},
-		new_tab = {
-			-- bg_color = "rgba(59, 34, 76, 50%)",
-			bg_color = "#0c0b0f",
-			fg_color = "white",
-		},
-	},
-}
+-- config.colors = require("cyberdream")
+config.color_scheme = "Catppuccin Mocha"
 
 -- Setting up key mappings
 
 config.keys = {
+	-- Toggle opacity between transparent (0.6) and solid (1.0)
+	{
+		key = "a",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action_callback(function(window, pane)
+			local overrides = window:get_config_overrides() or {}
+			if overrides.window_background_opacity == 1.0 then
+				overrides.window_background_opacity = 0.6
+			else
+				overrides.window_background_opacity = 1.0
+			end
+			window:set_config_overrides(overrides)
+		end),
+	},
+
+	-- Maximize instead of fullscreen: transparency is broken in fullscreen
+	-- on Windows 11 (wezterm issue #4525) regardless of frontend
+	{
+		key = "Enter",
+		mods = "ALT",
+		action = wezterm.action_callback(function(window, pane)
+			window:maximize()
+		end),
+	},
+
 	-- Switch to the default workspace
 	{
 		key = "y",

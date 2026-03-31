@@ -33,7 +33,7 @@ local config = wezterm.config_builder()
 local platform = wezterm.target_triple
 if platform == platform_info["window"] then
 	-- config.default_prog = { "powershell.exe" }
-	config.default_prog = { "pwsh" }
+	config.default_prog = { "nu" }
 else
 	config.default_prog = { "/opt/homebrew/bin/nu" }
 end
@@ -188,7 +188,7 @@ config.enable_scroll_bar = true
 config.scrollback_lines = 3500
 
 -- setting up workspace
-term = "xterm_256color"
+config.term = "xterm-256color"
 config.font = wezterm.font("JetBrains Mono")
 -- OpenGL: transparency works with maximize (not fullscreen - wezterm #4525)
 -- WebGpu: opacity broken on Windows (wezterm #5790, #6359)
